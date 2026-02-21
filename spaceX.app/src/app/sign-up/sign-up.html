@@ -1,0 +1,54 @@
+<h1>Sign up</h1>
+<div *ngIf="errorMessage" style="color:red; margin-bottom: 1rem;">{{ errorMessage }}</div>
+<form [formGroup]="signUpForm" (ngSubmit)="onSubmit()">
+  <div>
+    <label for="name">Name:</label>
+    <input id="name" type="text" formControlName="name" />
+    <div *ngIf="signUpForm.get('name')?.touched && signUpForm.get('name')?.invalid" style="color:red">
+      <small *ngIf="signUpForm.get('name')?.errors?.['required']">Name is required.</small>
+    </div>
+  </div>
+
+  <div>
+    <label for="lastName">Last name:</label>
+    <input id="lastName" type="text" formControlName="lastName" />
+    <div *ngIf="signUpForm.get('lastName')?.touched && signUpForm.get('lastName')?.invalid" style="color:red">
+      <small *ngIf="signUpForm.get('lastName')?.errors?.['required']">Last name is required.</small>
+    </div>
+  </div>
+
+  <div>
+    <label for="email">Email:</label>
+    <input id="email" type="email" formControlName="email" />
+    <div *ngIf="signUpForm.get('email')?.touched && signUpForm.get('email')?.invalid" style="color:red">
+      <small *ngIf="signUpForm.get('email')?.errors?.['required']">Email is required.</small>
+      <small *ngIf="signUpForm.get('email')?.errors?.['email']">Enter a valid email.</small>
+    </div>
+  </div>
+
+  <div>
+    <label for="password">Password:</label>
+    <input id="password" type="password" formControlName="password" />
+    <div *ngIf="signUpForm.get('password')?.touched && signUpForm.get('password')?.invalid" style="color:red">
+      <small *ngIf="signUpForm.get('password')?.errors?.['required']">Password is required.</small>
+      <small *ngIf="signUpForm.get('password')?.errors?.['minlength']">
+        Password must be at least 6 characters.
+      </small>
+    </div>
+  </div>
+
+  <div>
+    <label for="confirmPassword">Re-enter password:</label>
+    <input id="confirmPassword" type="password" formControlName="confirmPassword" />
+    <div *ngIf="signUpForm.get('confirmPassword')?.touched && signUpForm.get('confirmPassword')?.invalid" style="color:red">
+      <small *ngIf="signUpForm.get('confirmPassword')?.errors?.['required']">Please re-enter your password.</small>
+    </div>
+    <div *ngIf="signUpForm.get('confirmPassword')?.touched && signUpForm.errors?.['passwordMismatch']" style="color:red">
+      <small>Passwords do not match.</small>
+    </div>
+  </div>
+
+  <button type="submit" [disabled]="signUpForm.invalid || loading">{{ loading ? 'Signing up…' : 'Sign Up' }}</button>
+  <br/>
+  <a routerLink="/">Already have an account? Sign In</a>
+</form>

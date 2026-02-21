@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36915.13 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpaceX.AuthApi", "SpaceX.AuthApi\SpaceX.AuthApi.csproj", "{CEEF00EF-CC71-45C1-A27F-147EF9E5DAA6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CEEF00EF-CC71-45C1-A27F-147EF9E5DAA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CEEF00EF-CC71-45C1-A27F-147EF9E5DAA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CEEF00EF-CC71-45C1-A27F-147EF9E5DAA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CEEF00EF-CC71-45C1-A27F-147EF9E5DAA6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C994622C-624A-4453-B0FB-45B32FAF9456}
+	EndGlobalSection
+EndGlobal
