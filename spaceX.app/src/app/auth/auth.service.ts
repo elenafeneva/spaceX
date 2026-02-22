@@ -1,48 +1,65 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, catchError, throwError } from 'rxjs';
+import { AuthResponse, SignInRequest, SignUpRequest } from '../models';
 
-const API_BASE = '/api';
-
-export interface SignInRequest {
-  email: string;
-  password: string;
-}
-
-export interface SignUpRequest {
-  name: string;
-  lastName: string;
-  email: string;
-  password: string;
-}
-
-export interface AuthResponse {
-  token?: string;
-  user?: unknown;
-  [key: string]: unknown;
-}
+const TOKEN_KEY = 'auth_token';
+const API_BASE = 'https://localhost:44382/api';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   constructor(private http: HttpClient) {}
 
-  signIn(credentials: SignInRequest): Observable<AuthResponse> {
+  getToken(): string | null {
+    return localStorage.getItem(TOKEN_KEY);
+  }
+
+  setToken(token: string): void {
+    localStorage.setItem(TOKEN_KEY, token);
+  }
+
+  removeToken(): void {
+    localStorage.removeItem(TOKEN_KEY);
+  }
+
+  isLoggedIn(): boolean {
+    return !!this.getToken();
+  }
+
+  signIn(credentials: SignInRequest): Observable<string> {
+    const body = { email: credentials.email, password: credentials.password };
     return this.http
-      .post<AuthResponse>(`${API_BASE}/auth/signin`, credentials)
+      .post(`${API_BASE}/Authorization/login`, body, { responseType: 'text' as const })
       .pipe(catchError(this.handleError));
   }
 
-  signUp(payload: SignUpRequest): Observable<AuthResponse> {
+  signUp(signUpUser: SignUpRequest): Observable<AuthResponse> {
+    const body = {
+      firstName: signUpUser.firstName,
+      lastName: signUpUser.lastName,
+      email: signUpUser.email,
+      password: signUpUser.password,
+    };
     return this.http
-      .post<AuthResponse>(`${API_BASE}/auth/signup`, payload)
+      .post<AuthResponse>(`${API_BASE}/Authorization/register`, body)
       .pipe(catchError(this.handleError));
   }
 
-  private handleError(error: { status?: number; error?: unknown; message?: string }) {
-    const message =
-      error?.error && typeof error.error === 'object' && 'message' in error.error
-        ? (error.error as { message: string }).message
-        : error?.message ?? 'Request failed';
+  private handleError(error: {
+    status?: number;
+    error?: unknown;
+    message?: string;
+    statusText?: string;
+  }) {
+    let message: string;
+    if (error?.status === 0) {
+      message =
+        'Cannot reach the API';
+    } else if (error?.error && typeof error.error === 'object' && 'message' in error.error) {
+      message = (error.error as { message: string }).message;
+    } else {
+      message = error?.message ?? error?.statusText ?? 'Request failed';
+    }
     return throwError(() => ({ status: error?.status, error: error?.error, message }));
   }
 }

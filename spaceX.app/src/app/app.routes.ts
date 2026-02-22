@@ -1,8 +1,12 @@
 import { Routes } from '@angular/router';
-import { SignIn } from './sign-in/sign-in';
-import { SignUp } from './sign-up/sign-up';
+import { SignInComponent } from './sign-in/sign-in.component';
+import { SignUpComponent } from './sign-up/sign-up.component';
+import { authGuard } from './auth/auth.guard';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 export const routes: Routes = [
-  { path: '', component: SignIn },
-  { path: 'sign-up', component: SignUp },
+  { path: '', component: SignInComponent },
+  { path: 'sign-up', component: SignUpComponent },
+  { path: 'dashboard', component: DashboardComponent, canActivate: [authGuard] },
+  { path: '**', redirectTo: '' },
 ];

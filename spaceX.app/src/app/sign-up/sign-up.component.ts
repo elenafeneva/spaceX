@@ -9,7 +9,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { RouterLink, Router } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
 
 function passwordMatchValidator(): ValidatorFn {
@@ -22,22 +22,24 @@ function passwordMatchValidator(): ValidatorFn {
 
 @Component({
   selector: 'app-sign-up',
+  standalone: true,
   imports: [CommonModule, ReactiveFormsModule, RouterLink],
   templateUrl: './sign-up.html',
   styleUrl: './sign-up.scss',
 })
-export class SignUp {
+export class SignUpComponent {
   signUpForm: FormGroup;
   errorMessage: string | null = null;
   loading = false;
 
   constructor(
     private fb: FormBuilder,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) {
     this.signUpForm = this.fb.group(
       {
-        name: ['', Validators.required],
+        firstName: ['', Validators.required],
         lastName: ['', Validators.required],
         email: ['', [Validators.required, Validators.email]],
         password: ['', [Validators.required, Validators.minLength(6)]],
@@ -50,13 +52,17 @@ export class SignUp {
   onSubmit(): void {
     this.errorMessage = null;
     if (!this.signUpForm.valid) return;
+    const { confirmPassword: _, ...signUpUser } = this.signUpForm.value;
     this.loading = true;
-    const { confirmPassword: _, ...payload } = this.signUpForm.value;
-    this.authService.signUp(payload).subscribe({
+    this.authService.signUp(signUpUser).subscribe({
       next: (res) => {
         this.loading = false;
-        // TODO: store token and navigate (e.g. to dashboard or sign-in)
-        console.log('Signed up', res);
+        this.signUpForm.get('password')?.reset();
+        this.signUpForm.get('confirmPassword')?.reset();
+        if (res && res.token) {
+          this.authService.setToken(res.token);
+          this.router.navigate(['/dashboard']);
+        }
       },
       error: (err) => {
         this.loading = false;
