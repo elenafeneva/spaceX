@@ -11,6 +11,13 @@ import {
 import { CommonModule } from '@angular/common';
 import { RouterLink, Router } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
+import { InputGroupModule } from 'primeng/inputgroup';
+import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
+import { InputTextModule } from 'primeng/inputtext';
+import { ButtonModule } from 'primeng/button';
+import { CardModule } from 'primeng/card';
+import { PasswordModule } from 'primeng/password';
+
 
 function passwordMatchValidator(): ValidatorFn {
   return (group: AbstractControl): ValidationErrors | null => {
@@ -23,7 +30,15 @@ function passwordMatchValidator(): ValidatorFn {
 @Component({
   selector: 'app-sign-up',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterLink],
+  imports: [CommonModule, 
+    ReactiveFormsModule, 
+    RouterLink, 
+    InputGroupModule, 
+    InputGroupAddonModule, 
+    InputTextModule, 
+    ButtonModule, 
+    CardModule,
+    PasswordModule],
   templateUrl: './sign-up.html',
   styleUrl: './sign-up.scss',
 })

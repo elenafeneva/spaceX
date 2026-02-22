@@ -36,12 +36,5 @@ namespace SpaceX.AuthApi.Controllers
 
             return Ok(result);
         }
-
-        [Authorize]
-        [HttpGet]
-        public IActionResult CheckAuthenticated()
-        {
-            return Ok("authenticated");
-        }
     }
 }

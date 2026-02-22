@@ -1,5 +1,28 @@
-<h1>Dashboard</h1>
-<p>You are signed in.</p>
-<button type="button" (click)="logout()">Sign out</button>
-<br/>
-<a routerLink="/">Back to Sign In</a>
+<div style="display: flex; align-items: center; justify-content: space-between;">
+    <h2 style="margin: 0;">SpaceX Dashboard</h2>
+    <p-button type="submit" (click)="logout()" label="Sign out" />
+</div>
+<div [ngClass]="'card flex justify-center'" style="display:flex; justify-content:center;">
+    <p-selectbutton [options]="launchTypes" [(ngModel)]="value" (ngModelChange)="onLaunchTypeChange($event)"
+        optionLabel="name" optionValue="value"></p-selectbutton>
+</div>
+<div>
+    <p-table [value]="filteredSpaceXData" [paginator]="true" [rows]="10" [responsiveLayout]="'scroll'">
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Flight Number</th>
+                <th>Rocket Name</th>
+                <th>Launch Date</th>
+                <th>Launch Details</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-launch>
+            <tr>
+                <td>{{ launch.flight_number}}</td>
+                <td>{{ launch.name }}</td>
+                <td>{{ launch.date_local | date: 'medium' }}</td>
+                <td>{{ launch.details}}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>

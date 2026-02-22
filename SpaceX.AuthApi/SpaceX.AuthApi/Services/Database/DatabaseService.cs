@@ -1,6 +1,5 @@
 using MySqlConnector;
 using SpaceX.AuthApi.Entities;
-using System.Reflection.Metadata.Ecma335;
 
 namespace SpaceX.AuthApi.Services.Database
 {
