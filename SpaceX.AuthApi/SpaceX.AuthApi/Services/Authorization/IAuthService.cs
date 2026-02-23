@@ -4,7 +4,7 @@ namespace SpaceX.AuthApi.Services.Authorization
 {
     public interface IAuthService
     {
-        Task<string> LoginAsync(UserDto request);
-        Task<bool> RegisterAsync(UserDto request);
+        Task<string> LoginAsync(UserLoginDto request);
+        Task<bool> RegisterAsync(UserRegisterDto request);
     }
 }

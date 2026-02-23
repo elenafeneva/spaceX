@@ -1,9 +1,7 @@
 <div class="p-d-flex" style="height:100vh; display:flex; justify-content:center; align-items:center;">
   <p-card [style]="{ width: '25rem', overflow: 'hidden' }">
-    <div *ngIf="errorMessage" class="p-text-danger mb-4" style="padding:1rem;">{{ errorMessage }}</div>
     <ng-template #header>
-      <img src="assets/spaceX.jpg" alt="Logo" width="50" class="mb-2" />
-      <h6 class="text-2xl font-bold mb-2">SpaceX - Sign In</h6>
+      <img src="spaceX.jpg" alt="Logo" width="400" class="mb-2" />
     </ng-template>
     <ng-template #title> SpaceX</ng-template>
     <ng-template #subtitle> Sign In </ng-template>
@@ -24,7 +22,7 @@
           </small>
         </div>
       </div>
-      <br/>
+      <br />
       <div class="card grid grid-cols-1 md:grid-cols-2 gap-4">
         <p-inputgroup>
           <p-inputgroup-addon>
@@ -42,6 +40,9 @@
         </div>
       </div>
       <br />
+      <div class="card flex justify-center">
+        <p *ngIf="errorMessage" style="color: red; margin-top: 1rem;">{{ errorMessage }}</p>
+      </div>
       <div class="card flex justify-center">
         <p-button type="submit" [disabled]="signInForm.invalid || loading"
           label="{{ loading ? 'Signing in…' : 'Sign In' }}" />

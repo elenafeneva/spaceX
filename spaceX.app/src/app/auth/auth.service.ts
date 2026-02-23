@@ -8,7 +8,7 @@ const API_BASE = 'https://localhost:44382/api';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getToken(): string | null {
     return localStorage.getItem(TOKEN_KEY);
@@ -45,20 +45,12 @@ export class AuthService {
       .pipe(catchError(this.handleError));
   }
 
-  private handleError(error: {
-    status?: number;
-    error?: unknown;
-    message?: string;
-    statusText?: string;
-  }) {
-    let message: string;
+  private handleError(error: any) {
+    let message = 'Request failed';
     if (error?.status === 0) {
-      message =
-        'Cannot reach the API';
-    } else if (error?.error && typeof error.error === 'object' && 'message' in error.error) {
-      message = (error.error as { message: string }).message;
-    } else {
-      message = error?.message ?? error?.statusText ?? 'Request failed';
+      message = 'Cannot reach the API. Check that it is running and that the HTTPS certificate is trusted.';
+    } else if (error?.status === 400) {
+      message = error?.error ?? 'Invalid request. Please check your inputs.';
     }
     return throwError(() => ({ status: error?.status, error: error?.error, message }));
   }

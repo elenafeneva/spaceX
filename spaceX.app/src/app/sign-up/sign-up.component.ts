@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
@@ -30,18 +30,20 @@ function passwordMatchValidator(): ValidatorFn {
 @Component({
   selector: 'app-sign-up',
   standalone: true,
-  imports: [CommonModule, 
-    ReactiveFormsModule, 
-    RouterLink, 
-    InputGroupModule, 
-    InputGroupAddonModule, 
-    InputTextModule, 
-    ButtonModule, 
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    RouterLink,
+    InputGroupModule,
+    InputGroupAddonModule,
+    InputTextModule,
+    ButtonModule,
     CardModule,
     PasswordModule],
   templateUrl: './sign-up.html',
   styleUrl: './sign-up.scss',
 })
+
 export class SignUpComponent {
   signUpForm: FormGroup;
   errorMessage: string | null = null;
@@ -50,7 +52,8 @@ export class SignUpComponent {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private cdr: ChangeDetectorRef
   ) {
     this.signUpForm = this.fb.group(
       {
@@ -64,6 +67,12 @@ export class SignUpComponent {
     );
   }
 
+  ngOnInit(): void {
+    if (this.authService.isLoggedIn()) {
+      this.router.navigate(['/dashboard']);
+    }
+  }
+
   onSubmit(): void {
     this.errorMessage = null;
     if (!this.signUpForm.valid) return;
@@ -74,14 +83,16 @@ export class SignUpComponent {
         this.loading = false;
         this.signUpForm.get('password')?.reset();
         this.signUpForm.get('confirmPassword')?.reset();
-        if (res && res.token) {
-          this.authService.setToken(res.token);
-          this.router.navigate(['/dashboard']);
+        this.cdr.detectChanges();
+        if (res) {
+          //redirect to sign in page after successful registration
+          this.router.navigate(['/']);
         }
       },
       error: (err) => {
         this.loading = false;
         this.errorMessage = err?.message ?? 'Sign up failed. Please try again.';
+        this.cdr.detectChanges();
       },
     });
   }

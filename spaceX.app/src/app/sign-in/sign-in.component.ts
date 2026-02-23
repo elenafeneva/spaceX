@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
@@ -13,7 +13,8 @@ import { CardModule } from 'primeng/card';
 @Component({
   selector: 'app-sign-in',
   standalone: true,
-  imports: [CommonModule, 
+  imports: [
+    CommonModule, 
     ReactiveFormsModule, 
     RouterLink, 
     InputGroupModule, 
@@ -32,7 +33,8 @@ export class SignInComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private cdr: ChangeDetectorRef
   ) {
     this.signInForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -57,6 +59,7 @@ export class SignInComponent implements OnInit {
     this.authService.signIn(credentials).subscribe({
       next: (token) => {
         this.loading = false;
+        this.cdr.detectChanges();
         this.signInForm.get('password')?.reset();
         this.authService.setToken(token);
         this.router.navigate(['/dashboard']);
@@ -64,6 +67,7 @@ export class SignInComponent implements OnInit {
       error: (err) => {
         this.loading = false;
         this.errorMessage = err?.message ?? 'Sign in failed. Please try again.';
+        this.cdr.detectChanges();
       },
     });
   }

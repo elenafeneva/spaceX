@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using SpaceX.AuthApi.Entities;
 using SpaceX.AuthApi.Models;
 using SpaceX.AuthApi.Services.Authorization;
@@ -18,7 +17,7 @@ namespace SpaceX.AuthApi.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<ActionResult<User>> RegisterAsync(UserDto request)
+        public async Task<ActionResult<User>> RegisterAsync(UserRegisterDto request)
         {
             var result = await _authService.RegisterAsync(request);
             if (!result)
@@ -28,7 +27,7 @@ namespace SpaceX.AuthApi.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<string>> Login(UserDto request)
+        public async Task<ActionResult<string>> Login(UserLoginDto request)
         {
             var result = await _authService.LoginAsync(request);
             if (result.Equals("Invalid Email/Password"))

@@ -19,20 +19,14 @@ export class SpacexService {
       .pipe(catchError(this.handleError));
   }
 
-  private handleError(error: {
-    status?: number;
-    error?: unknown;
-    message?: string;
-    statusText?: string;
-  }) {
-    let message: string;
+  private handleError(error: any) {
+    let message = 'Request failed';
     if (error?.status === 0) {
-      message =
-        'Cannot reach the API. Check that it is running and that the HTTPS certificate is trusted.';
-    } else if (error?.error && typeof error.error === 'object' && 'message' in error.error) {
-      message = (error.error as { message: string }).message;
-    } else {
-      message = error?.message ?? error?.statusText ?? 'Request failed';
+      message = 'Cannot reach the API. Check that it is running and that the HTTPS certificate is trusted.';
+    } else if (error?.status && error?.status !== 200) {
+      message = error?.error ?? 'Error calling SpaceX API';
+    } else if (error?.status === 500) {
+      message = 'Internal server error.';
     }
     return throwError(() => ({ status: error?.status, error: error?.error, message }));
   }

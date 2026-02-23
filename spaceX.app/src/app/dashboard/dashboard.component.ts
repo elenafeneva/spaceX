@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
 import { SpacexService } from '../spacex/spacex.service';
 import { SelectButtonModule } from 'primeng/selectbutton';
@@ -11,8 +11,8 @@ import { TableModule } from 'primeng/table';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, 
-    RouterLink, 
+  imports: [
+    CommonModule, 
     SelectButtonModule,
     FormsModule,
     ButtonModule,
@@ -27,11 +27,11 @@ export class DashboardComponent implements OnInit {
   loading = false;
   errorMessage: string | null = null;
   launchTypes = [
-    { name: 'Latest', value: 'latest' },
     { name: 'Upcoming', value: 'upcoming' },
+    { name: 'Latest', value: 'latest' },
     { name: 'Past', value: 'past' }
   ]
-  value: string = 'latest';
+  value: string = 'upcoming';
 
   constructor(
     private authService: AuthService,
@@ -53,6 +53,7 @@ export class DashboardComponent implements OnInit {
   }
 
   fetchSpaceXData(typeOfLaunches: string): void {
+    if (!typeOfLaunches) return;  
     this.loading = true;
     this.errorMessage = null;
     this.spacexService.getSpaceXData(typeOfLaunches).subscribe({

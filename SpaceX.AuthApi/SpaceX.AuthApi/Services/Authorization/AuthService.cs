@@ -20,7 +20,7 @@ namespace SpaceX.AuthApi.Services.Authorization
             _databaseService = databaseService;
         }
 
-        public async Task<string> LoginAsync(UserDto request)
+        public async Task<string> LoginAsync(UserLoginDto request)
         {
             var user = await _databaseService.QueryUsersAsync(request.Email);
 
@@ -64,7 +64,7 @@ namespace SpaceX.AuthApi.Services.Authorization
             return token;
         }
 
-        public async Task<bool> RegisterAsync(UserDto request)
+        public async Task<bool> RegisterAsync(UserRegisterDto request)
         {
             var existingUser = await _databaseService.QueryUsersAsync(request.Email);
             if (existingUser != null)

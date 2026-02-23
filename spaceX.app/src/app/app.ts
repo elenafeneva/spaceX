@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { AuthService } from './auth/auth.service';
 
@@ -9,7 +9,7 @@ import { AuthService } from './auth/auth.service';
   styleUrl: './app.scss'
 })
 export class App {
-  protected readonly title = signal('spaceX.app');
+  protected readonly title = 'spaceX.app';
 
   constructor(private authService: AuthService, private router: Router) {
     const token = this.authService.getToken();
